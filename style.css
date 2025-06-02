@@ -1,29 +1,144 @@
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
-#world{
-	position: absolute;
-	width:100%;
-	height: 100%;
-	background-color: #6ecccc;
-  overflow:hidden;
+@import url("https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500&display=swap");
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #151f29;
+  font-family: 'Fredoka';
 }
 
-#credits{
-  position:absolute;
-  width:100%;
-  margin: auto;
-  bottom:0;
-  margin-bottom:20px;
-  font-family:'Open Sans', sans-serif;
-  color:#328685;
-  font-size:0.7em;
-  text-transform: uppercase;
-  text-align : center;
-}
-#credits a {
-  color:#328685;
+.password-generator {
+  display: grid;
+  width: 450px;
+  padding: 20px;
+  color: #c8c8c8;
+  border-radius: 8px;
+  background-color: #191c25;
+  box-shadow: -1px -1px 0px 0px #4848485e, inset -1px -1px 0px 0px #00000057;
 }
 
-#credits a:hover {
-  color:#630d15;
+.password-generator h2 {
+  text-align: center;
+  font-weight: 500;
+}
+
+.password-output {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 25px 0 15px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background-color: #0e0e0e78;
+  box-shadow: -1px -1px 0px 0px #3a3a3a5e, inset -1px -1px 0px 0px #00000057;
+}
+
+#password {
+  width: 100%;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  letter-spacing: 1px;
+  color: #e9e9e9;
+  background-color: transparent;
+}
+
+.copy-btn {
+  border: none;
+  cursor: pointer;
+  background: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: #e9e9e9;
+}
+
+.copy-btn:hover {
+  color: #b4cff4ec;
+}
+
+.copy-btn::before {
+  content: "\F759";
+}
+
+.copy-btn.copied::before {
+  content: "\F26D";
+  color: #6eaaff;
+  font-size: 14px;
+}
+
+label[for="length-input"] {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+label {
+  cursor: pointer;
+  font-size: 16px;
+  padding: 12px 15px;
+  border-radius: 5px;
+  background-color: #1a1a1a61;
+  box-shadow: -1px -1px 0px 0px #3a3a3a5e, inset -1px -1px 0px 0px #00000057;
+}
+
+.length-val-box::before {
+  content: "Password Length: ";
+}
+
+#length-input {
+  cursor: pointer;
+}
+
+.options-wrapper {
+  margin-top: 25px;
+}
+
+.options {
+  display: grid;
+  gap: 12px;
+  margin-top: 15px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.password-generator input[type=checkbox] {
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.generate-btn {
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+  color: #e8e8e8;
+  line-height: 40px;
+  border-radius: 5px;
+  font-family: "Fredoka";
+  transition: transform .3s;
+  background: #213f69ec;
+}
+
+.generate-btn:active {
+  transform: scale(0.98);
+}
+
+@media (max-width:425px) {
+  .options {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width:375px) {
+  label[for="length-input"] {
+    flex-direction: row-reverse;
+  }
+
+  .length-val-box::before {
+    content: "";
+  }
 }
