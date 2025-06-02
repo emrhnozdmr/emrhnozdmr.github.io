@@ -1,21 +1,23 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>Kediyi Sev</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-</head>
-<body>
-<div id="world">
-<div id="credits">
-  <p>Minik bir CSS-JS oyunu</p>
+<div class="password-generator">
+  <h2>Password Generator</h2>
+  <div class="password-output">
+    <input type="text" id="password" readonly>
+    <button class="bi copy-btn"></button>
+  </div>
+
+  <label for="length-input">
+    <span class="length-val-box">12</span>
+    <input type="range" id="length-input" min="4" max="30" value="12">
+  </label>
+
+  <div class="options-wrapper">
+    <p>Advance Options</p>
+    <div class="options">
+      <label><input type="checkbox" id="lowercase" checked>Lowercase (a-z)</label>
+      <label><input type="checkbox" id="uppercase" checked>Uppercase (A-Z)</label>
+      <label><input type="checkbox" id="numbers" checked>Numbers (0-9)</label>
+      <label><input type="checkbox" id="special" checked>Special (@#$%...)</label>
+    </div>
+  </div>
+  <button class="generate-btn">Generate Password</button>
 </div>
- </div>
-<script src='http://cdnjs.cloudflare.com/ajax/libs/three.js/r70/three.min.js'></script>
-<script src='http://cdnjs.cloudflare.com/ajax/libs/gsap/1.16.1/TweenMax.min.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/264161/OrbitControls.js'></script>
-<script src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/264161/Cat.js'></script>
-<script type="text/javascript" src="cat.js"></script>
-</body>
-</html>
