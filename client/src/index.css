@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  :root {
+    --primary-green: #00FF8C;
+    --primary-red: #FF3E3E;
+    --background-dark: #121212;
+    --card-dark: #1A1A1A;
+    --text-dark: #ffffff;
+    --text-light: #1A1A1A;
+    --background-light: #f8f9fa;
+    --card-light: #ffffff;
+    
+    /* Default to light theme variables */
+    --background: var(--background-light);
+    --card: var(--card-light);
+    --text: var(--text-light);
+  }
+  
+  /* Dark mode overrides */
+  .dark {
+    --background: var(--background-dark);
+    --card: var(--card-dark);
+    --text: var(--text-dark);
+  }
+  
+  /* iOS specific overrides */
+  @media (prefers-color-scheme: dark) {
+    .system {
+      --background: var(--background-dark);
+      --card: var(--card-dark);
+      --text: var(--text-dark);
+    }
+  }
+
+  body {
+    @apply font-sans antialiased;
+    background-color: var(--background);
+    color: var(--text) !important;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* iOS Safari color-scheme support */
+  @supports (-webkit-touch-callout: none) {
+    html {
+      color-scheme: light dark;
+    }
+  }
+}
+
+@layer components {
+  .matrix-bg {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .matrix-bg::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(var(--primary-green) 1px, transparent 1px);
+    background-size: 50px 50px;
+    opacity: 0.05;
+    z-index: -1;
+  }
+  
+  .skill-bar {
+    transition: width 1.5s ease-in-out;
+  }
+  
+  .terminal-text {
+    font-family: 'JetBrains Mono', monospace;
+  }
+  
+  .terminal-container {
+    border: 1px solid var(--primary-green);
+    border-radius: 4px;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Terminal styling based on theme */
+  body.dark .terminal-container, .dark .terminal-container {
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  
+  body:not(.dark) .terminal-container, :not(.dark) .terminal-container {
+    background-color: rgba(245, 245, 245, 0.9);
+    color: var(--text-light);
+    border-color: var(--primary-green);
+  }
+  
+  .terminal-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-green), #007747, var(--primary-green));
+    background-size: 200% 100%;
+    animation: gradientMove 4s linear infinite;
+  }
+  
+  /* Theme-based section styling */
+  .section-bg-primary {
+    transition: background-color 0.3s ease;
+    background-color: var(--card);
+  }
+  
+  body.dark .section-bg-primary {
+    background-color: var(--card-dark);
+  }
+  
+  body:not(.dark) .section-bg-primary {
+    background-color: var(--card-light);
+    border-color: #e0e0e0;
+  }
+  
+  /* Card styling for dark/light themes */
+  .theme-card {
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: var(--card);
+    color: var(--text);
+    border-color: rgba(0, 255, 140, 0.3);
+  }
+  
+  body.dark .theme-card {
+    background-color: var(--card-dark);
+    border-color: rgba(0, 255, 140, 0.3);
+  }
+  
+  body:not(.dark) .theme-card {
+    background-color: var(--card-light);
+    border-color: rgba(0, 180, 100, 0.3);
+    color: var(--text-light);
+  }
+  
+  /* Text color for paragraphs */
+  .theme-text {
+    transition: color 0.3s ease;
+    color: var(--text);
+  }
+  
+  body.dark .theme-text, .dark .theme-text {
+    color: #9ca3af; /* gray-400 in dark mode */
+  }
+  
+  body:not(.dark) .theme-text, :not(.dark) .theme-text {
+    color: #4b5563; /* gray-600 in light mode */
+  }
+  
+  /* Animations */
+  @keyframes gradientMove {
+    0% {
+      background-position: 0% 0%;
+    }
+    100% {
+      background-position: 200% 0%;
+    }
+  }
+  
+  .blink {
+    animation: blink 1s step-end infinite;
+  }
+  
+  @keyframes blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+  
+  /* iOS specific dark mode */
+  @media (prefers-color-scheme: dark) {
+    @supports (-webkit-touch-callout: none) {
+      .terminal-container {
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+      
+      .theme-card {
+        background-color: var(--card-dark);
+        color: var(--text-dark);
+      }
+      
+      .theme-text {
+        color: #9ca3af;
+      }
+    }
+  }
+}
