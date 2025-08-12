@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emirhan Özdemir - Siber Güvenlik Uzmanı</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Aydınlık tema için CSS değişkenleri */
+        :root {
+            --bg-color: #f8fafc; /* Hafif gri arka plan */
+            --text-color: #1e293b; /* Koyu lacivert yazı */
+            --card-bg-color: #ffffff; /* Kartlar için beyaz */
+            --border-color: #e2e8f0; /* Açık gri kenarlık */
+            --primary-color: #3b82f6; /* Mavi vurgu rengi */
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Karanlık tema için CSS değişkenleri */
+        [data-theme="dark"] {
+            --bg-color: #1a202c; /* Koyu lacivert arka plan */
+            --text-color: #e2e8f0; /* Açık gri yazı */
+            --card-bg-color: #2d3748; /* Kartlar için koyu gri */
+            --border-color: #4a5568; /* Koyu gri kenarlık */
+            --primary-color: #3b82f6; /* Mavi vurgu rengi */
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Body ve genel elemanlar için geçişli renkler */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Kartlar ve form elemanları gibi bileşenler */
+        .card {
+            background-color: var(--card-bg-color);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .input-field {
+            background-color: var(--card-bg-color);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+        }
+
+        /* Tema değiştirme butonu */
+        .toggle-btn {
+            background-color: var(--card-bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .toggle-btn:hover {
+            opacity: 0.8;
+        }
+
+        .nav-link {
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Yükleniyor simgesi */
+        .loading-spinner {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Bölüm başlıkları */
+        .section-title {
+            font-size: 2.25rem; /* text-4xl */
+            font-weight: 700; /* font-bold */
+            position: relative;
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .section-title span {
+            color: var(--primary-color);
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 6rem; /* Tailwind w-24 */
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 9999px; /* rounded-full */
+        }
+    </style>
+</head>
+<body data-theme="dark">
+
+    <!-- Header & Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 p-6 flex justify-between items-center bg-transparent backdrop-blur-sm shadow-sm transition duration-300 ease-in-out" id="navbar">
+        <div class="text-xl font-bold">
+            <span class="text-gray-400">&lt;Emirhan Özdemir /&gt;</span>
+        </div>
+        <nav class="hidden md:flex space-x-6 items-center">
+            <a href="#about" class="nav-link text-gray-400 hover:text-blue-500">Hakkında</a>
+            <a href="#skills" class="nav-link text-gray-400 hover:text-blue-500">Beceriler</a>
+            <a href="#experience" class="nav-link text-gray-400 hover:text-blue-500">Deneyim</a>
+            <a href="#education" class="nav-link text-gray-400 hover:text-blue-500">Eğitim</a>
+            <a href="#contact" class="nav-link text-gray-400 hover:text-blue-500">İletişim</a>
+            <a href="#" class="nav-link text-gray-400 hover:text-blue-500">Blog</a>
+            <button id="theme-toggle" class="toggle-btn w-10 h-10 rounded-full flex items-center justify-center text-xl shadow-lg">
+                <i class="fa-solid fa-sun"></i>
+            </button>
+        </nav>
+        <!-- Mobil Menü Butonu -->
+        <button id="mobile-menu-button" class="md:hidden text-gray-400">
+            <i class="fa-solid fa-bars text-2xl"></i>
+        </button>
+    </header>
+    
+    <!-- Mobil Menü -->
+    <div id="mobile-menu" class="hidden fixed top-0 left-0 right-0 z-40 p-6 bg-gray-900 shadow-lg transition duration-300 ease-in-out md:hidden">
+        <nav class="flex flex-col space-y-4 items-end">
+            <a href="#about" class="nav-link text-gray-400 hover:text-blue-500">Hakkında</a>
+            <a href="#skills" class="nav-link text-gray-400 hover:text-blue-500">Beceriler</a>
+            <a href="#experience" class="nav-link text-gray-400 hover:text-blue-500">Deneyim</a>
+            <a href="#education" class="nav-link text-gray-400 hover:text-blue-500">Eğitim</a>
+            <a href="#contact" class="nav-link text-gray-400 hover:text-blue-500">İletişim</a>
+            <a href="#" class="nav-link text-gray-400 hover:text-blue-500">Blog</a>
+        </nav>
+    </div>
+
+    <!-- Ana İçerik -->
+    <main class="container mx-auto p-6 md:p-12">
+
+        <!-- Ana Sayfa/Hero Bölümü -->
+        <section id="home" class="min-h-screen flex flex-col items-center justify-center text-center">
+            <h1 class="text-4xl md:text-5xl lg:text-7xl font-bold mb-4 animate-fade-in animate-delay-100">
+                Merhaba, benim adım
+                <br>
+                <span class="text-blue-500">Emirhan Özdemir</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-400 mb-8">Siber Güvenlik Uzmanı</p>
+            <div class="flex space-x-4">
+                <a href="#" class="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300 shadow-md">
+                    <i class="fa-solid fa-envelope mr-2"></i> İletişime Geç
+                </a>
+                <a href="#" class="border border-blue-500 text-blue-500 font-bold py-3 px-6 rounded-lg hover:bg-blue-500 hover:text-white transition duration-300 shadow-md">
+                    <i class="fa-brands fa-linkedin mr-2"></i> LinkedIn
+                </a>
+            </div>
+        </section>
+
+        <!-- Hakkında Bölümü -->
+        <section id="about" class="min-h-screen flex flex-col justify-center p-8 border-b-2 border-gray-700">
+            <h2 class="section-title"><span>01.</span> Hakkında</h2>
+            <div class="flex flex-col lg:flex-row items-center lg:space-x-12 mt-8">
+                <div class="lg:w-2/3 text-left">
+                    <p class="text-lg text-gray-400 leading-relaxed mb-4">
+                        Ben Emirhan Özdemir, siber güvenlik alanına tutkuyla bağlı, dinamik ve çözüm odaklı bir profesyonelim. Sistem ve ağ güvenliği, zafiyet analizi ve penetrasyon testleri gibi konularda kendimi sürekli geliştiriyorum. Dijital dünyayı tehdit eden tehlikelere karşı koruyucu çözümler üretmek benim için en büyük motivasyon kaynağıdır.
+                    </p>
+                    <p class="text-lg text-gray-400 leading-relaxed mb-4">
+                        Güvenlik açıklarını tespit etme, veri koruma stratejileri geliştirme ve en güncel siber tehditleri takip etme konularında derinlemesine bilgiye sahibim. Amacım, kurumların ve bireylerin dijital varlıklarını güvende tutmaktır.
+                    </p>
+                    <div class="flex flex-wrap gap-2 mt-4">
+                        <span class="bg-gray-800 text-gray-400 text-sm px-3 py-1 rounded-full">Siber Güvenlik</span>
+                        <span class="bg-gray-800 text-gray-400 text-sm px-3 py-1 rounded-full">Zafiyet Analizi</span>
+                        <span class="bg-gray-800 text-gray-400 text-sm px-3 py-1 rounded-full">Veri Koruması</span>
+                    </div>
+                </div>
+                <div class="lg:w-1/3 mt-8 lg:mt-0 flex justify-center">
+                    <!-- Hakkında bölümü için görsel yer tutucusu -->
+                    <img class="rounded-lg shadow-lg" src="https://placehold.co/400x300/1a202c/e2e8f0?text=Emirhan+Ozdemir" alt="Emirhan Özdemir">
+                </div>
+            </div>
+        </section>
+
+        <!-- Beceriler Bölümü -->
+        <section id="skills" class="min-h-screen flex flex-col justify-center p-8 border-b-2 border-gray-700">
+            <h2 class="section-title"><span>02.</span> Beceriler</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+                <!-- Programlama Becerileri -->
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <i class="fa-solid fa-code text-3xl text-blue-500 mr-4"></i>
+                        <h3 class="text-xl font-bold">Programlama</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>Python</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>JavaScript</span>
+                                <span>80%</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 80%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>C++</span>
+                                <span>70%</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 70%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Web Teknolojileri Becerileri -->
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <i class="fa-solid fa-laptop-code text-3xl text-blue-500 mr-4"></i>
+                        <h3 class="text-xl font-bold">Web Teknolojileri</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>HTML5</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 90%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>CSS3</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 85%;"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span>React</span>
+                                <span>75%</span>
+                            </div>
+                            <div class="w-full bg-gray-700 rounded-full h-2">
+                                <div class="bg-blue-500 h-2 rounded-full" style="width: 75%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Diğer Beceriler -->
+                <div class="card p-6 rounded-lg shadow-lg">
+                    <div class="flex items-center mb-4">
+                        <i class="fa-solid fa-list-check text-3xl text-blue-500 mr-4"></i>
+                        <h3 class="text-xl font-bold">Diğer Beceriler</h3>
+                    </div>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <i class="fa-solid fa-check-circle text-blue-500 mr-2"></i>
+                            <span>Git & GitHub</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa-solid fa-check-circle text-blue-500 mr-2"></i>
+                            <span>RESTful API</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa-solid fa-check-circle text-blue-500 mr-2"></i>
+                            <span>SQL & NoSQL</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa-solid fa-check-circle text-blue-500 mr-2"></i>
+                            <span>Bulut Teknolojileri (AWS, Azure)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Deneyim Bölümü -->
+        <section id="experience" class="min-h-screen flex flex-col justify-center p-8 border-b-2 border-gray-700">
+            <h2 class="section-title"><span>03.</span> Deneyim</h2>
+            <div class="space-y-8 mt-8">
+                <!-- Deneyim 1 -->
+                <div class="card p-6 rounded-lg shadow-lg flex flex-col md:flex-row justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold">Yazılım Mühendisi</h3>
+                        <p class="text-gray-400">Teknoloji Şirketi A.Ş. (Staj)</p>
+                        <p class="text-gray-500 mt-2">
+                           <i class="fa-solid fa-map-marker-alt mr-1"></i> İstanbul, Türkiye
+                        </p>
+                    </div>
+                    <div class="mt-4 md:mt-0 text-left md:text-right">
+                        <p class="text-gray-500">Ocak 2023 - Haziran 2023</p>
+                    </div>
+                </div>
+                <!-- Deneyim 2 -->
+                <div class="card p-6 rounded-lg shadow-lg flex flex-col md:flex-row justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold">Junior Web Geliştirici</h3>
+                        <p class="text-gray-400">Web Ajansı</p>
+                        <p class="text-gray-500 mt-2">
+                            <i class="fa-solid fa-map-marker-alt mr-1"></i> Ankara, Türkiye
+                        </p>
+                    </div>
+                    <div class="mt-4 md:mt-0 text-left md:text-right">
+                        <p class="text-gray-500">Temmuz 2022 - Aralık 2022</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Eğitim Bölümü -->
+        <section id="education" class="min-h-screen flex flex-col justify-center p-8 border-b-2 border-gray-700">
+            <h2 class="section-title"><span>04.</span> Eğitim</h2>
+            <div class="space-y-8 mt-8">
+                <!-- Eğitim 1 -->
+                <div class="card p-6 rounded-lg shadow-lg flex flex-col md:flex-row justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold">Yazılım Mühendisliği</h3>
+                        <p class="text-gray-400">Örnek Üniversitesi</p>
+                        <p class="text-gray-500 mt-2">
+                           <i class="fa-solid fa-map-marker-alt mr-1"></i> İstanbul, Türkiye
+                        </p>
+                    </div>
+                    <div class="mt-4 md:mt-0 text-left md:text-right">
+                        <p class="text-gray-500">Eylül 2021 - Günümüz</p>
+                    </div>
+                </div>
+                <!-- Eğitim 2 -->
+                <div class="card p-6 rounded-lg shadow-lg flex flex-col md:flex-row justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold">Lise Eğitimi</h3>
+                        <p class="text-gray-400">Örnek Lisesi</p>
+                        <p class="text-gray-500 mt-2">
+                            <i class="fa-solid fa-map-marker-alt mr-1"></i> İstanbul, Türkiye
+                        </p>
+                    </div>
+                    <div class="mt-4 md:mt-0 text-left md:text-right">
+                        <p class="text-gray-500">Eylül 2017 - Haziran 2021</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- İletişim Bölümü -->
+        <section id="contact" class="min-h-screen flex flex-col justify-center p-8">
+            <h2 class="section-title"><span>05.</span> İletişim</h2>
+            <div class="flex flex-col lg:flex-row gap-12 mt-8">
+                <!-- İletişim Bilgileri -->
+                <div class="lg:w-1/2">
+                    <h3 class="text-3xl font-bold mb-4">Bana Ulaşın</h3>
+                    <p class="text-lg text-gray-400 mb-8">
+                        Yeni fırsatlar ve iş birlikleri için iletişime geçebilirsiniz. Soru sormak veya sadece selamlaşmak için de bana ulaşabilirsiniz!
+                    </p>
+                    <div class="space-y-4 text-gray-400">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-envelope text-xl text-blue-500 mr-4"></i>
+                            <span>emirhan.ozdemir@email.com</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-phone text-xl text-blue-500 mr-4"></i>
+                            <span>+90 5xx xxx xx xx</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-location-dot text-xl text-blue-500 mr-4"></i>
+                            <span>İstanbul, Türkiye</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fa-brands fa-linkedin text-xl text-blue-500 mr-4"></i>
+                            <span>linkedin.com/in/emirhan-ozdemir</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- İletişim Formu -->
+                <div class="lg:w-1/2">
+                    <form id="contact-form" class="space-y-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-400 mb-2">Adınız</label>
+                            <input type="text" id="name" name="name" class="input-field w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" placeholder="Adınız" required>
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-400 mb-2">E-posta Adresiniz</label>
+                            <input type="email" id="email" name="email" class="input-field w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" placeholder="E-posta Adresiniz" required>
+                        </div>
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-400 mb-2">Konu</label>
+                            <div class="relative flex items-center">
+                                <input type="text" id="subject" name="subject" class="input-field w-full pr-28 px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" placeholder="Mesajınızın konusu" required>
+                                <button type="button" id="ai-subject-button" class="absolute right-2 px-3 py-1 bg-blue-500 text-white rounded-md text-sm hover:bg-blue-600 transition duration-300">
+                                    <span id="ai-button-text">Konu Öner ✨</span>
+                                    <span id="ai-button-loading" class="hidden loading-spinner"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-400 mb-2">Mesajınız</label>
+                            <textarea id="message" name="message" rows="4" class="input-field w-full px-4 py-2 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" placeholder="Mesajınız..." required></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-600 transition duration-300 w-full">Gönder</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-400 text-center p-6 mt-12">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <div class="text-xl font-bold">
+                    <span class="text-gray-400">&lt;Emirhan Özdemir /&gt;</span>
+                </div>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-blue-500"><i class="fa-brands fa-linkedin-in text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-500"><i class="fa-brands fa-github text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-500"><i class="fa-solid fa-envelope text-xl"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-blue-500"><i class="fa-solid fa-phone text-xl"></i></a>
+                </div>
+                <a href="#home" class="text-gray-400 hover:text-blue-500 flex items-center">
+                    <span class="mr-2">Başa Dön</span>
+                    <i class="fa-solid fa-arrow-up"></i>
+                </a>
+            </div>
+            <p class="mt-6">&copy; 2024 Emirhan Özdemir. Tüm Hakları Saklıdır.</p>
+        </div>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        // Sayfa yüklendiğinde varsayılan tema ve butonu ayarla
+        document.addEventListener('DOMContentLoaded', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            updateThemeToggleButton(isDark);
+        });
+
+        // Tema değiştirme işlevi
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                // Aydınlık temaya geç
+                document.documentElement.removeAttribute('data-theme');
+                updateThemeToggleButton(false);
+            } else {
+                // Karanlık temaya geç
+                document.documentElement.setAttribute('data-theme', 'dark');
+                updateThemeToggleButton(true);
+            }
+        });
+
+        // Tema değiştirme butonunun simgesini güncelleyen fonksiyon
+        function updateThemeToggleButton(isDark) {
+            const buttonIcon = themeToggle.querySelector('i');
+            if (isDark) {
+                // Mevcut tema karanlık. Buton, aydınlık temaya geçmek için güneş simgesini göstermeli.
+                buttonIcon.classList.remove('fa-moon');
+                buttonIcon.classList.add('fa-sun');
+                themeToggle.classList.remove('bg-gray-200', 'text-gray-800');
+                themeToggle.classList.add('bg-gray-800', 'text-white');
+            } else {
+                // Mevcut tema aydınlık. Buton, karanlık temaya geçmek için ay simgesini göstermeli.
+                buttonIcon.classList.remove('fa-sun');
+                buttonIcon.classList.add('fa-moon');
+                themeToggle.classList.remove('bg-gray-800', 'text-white');
+                themeToggle.classList.add('bg-gray-200', 'text-gray-800');
+            }
+        }
+
+        // Mobil menü açma/kapama
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Mobil menüdeki linke tıklanınca menüyü kapat
+        const mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Gemini API ile mesaj konusu oluşturma özelliği
+        const aiSubjectButton = document.getElementById('ai-subject-button');
+        const messageInput = document.getElementById('message');
+        const subjectInput = document.getElementById('subject');
+        const aiButtonText = document.getElementById('ai-button-text');
+        const aiButtonLoading = document.getElementById('ai-button-loading');
+
+        aiSubjectButton.addEventListener('click', async () => {
+            const message = messageInput.value.trim();
+            if (message.length < 20) {
+                // custom alert box can be implemented here instead of alert
+                subjectInput.value = "Lütfen daha uzun bir mesaj yazın.";
+                return;
+            }
+
+            // Buton durumunu güncelle
+            aiSubjectButton.disabled = true;
+            aiButtonText.classList.add('hidden');
+            aiButtonLoading.classList.remove('hidden');
+
+            try {
+                // LLM'den mesaj konusu talep etmek için prompt oluşturma
+                const prompt = `Aşağıdaki mesaj için en uygun, profesyonel ve kısa bir konu başlığı (subject line) oluştur. Cevap sadece konu başlığı olsun, başka bir metin içermesin.
+                Mesaj: "${message}"`;
+
+                let chatHistory = [];
+                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+                const payload = { contents: chatHistory };
+                const apiKey = "";
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const generatedSubject = result.candidates[0].content.parts[0].text;
+                    subjectInput.value = generatedSubject.trim();
+                } else {
+                    subjectInput.value = "Konu başlığı oluşturulamadı.";
+                }
+
+            } catch (error) {
+                console.error("Gemini API hatası:", error);
+                subjectInput.value = "Bir hata oluştu.";
+            } finally {
+                // Buton durumunu eski haline döndür
+                aiSubjectButton.disabled = false;
+                aiButtonText.classList.remove('hidden');
+                aiButtonLoading.classList.add('hidden');
+            }
+        });
+
+        // Form gönderme işlemini simüle et
+        const contactForm = document.getElementById('contact-form');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            // custom alert box can be implemented here instead of alert
+            contactForm.reset();
+        });
+    </script>
+</body>
+</html>
